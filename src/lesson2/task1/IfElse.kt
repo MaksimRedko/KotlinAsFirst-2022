@@ -145,7 +145,7 @@ fun rookOrBishopThreatens(
     bishopX: Int, bishopY: Int
 ): Int {
     var t = 0
-    if ((kingX == rookX) || (kingY == rookY)) {
+    if (kingX == rookX || kingY == rookY) {
         t += 1
     }
     if ((bishopX - kingX) * (bishopX - kingX) == (bishopY - kingY) * (bishopY - kingY)) {
@@ -168,14 +168,11 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
     val sqc = c * c
     val sqmax = max(sqa, max(sqb, sqc))
     if ((a + b > c) &&(a + c > b) && (b + c > a)) {
-        if ((sqa + sqc + sqb) < 2 * sqmax) {
-            return 2
-        }
-        if ((sqa + sqc + sqb) > 2 * sqmax) {
-            return 0
-        }
-        if ((sqa + sqc + sqb) == 2 * sqmax) {
-            return 1
+        return when {
+            (sqa + sqc + sqb) < 2 * sqmax -> 2
+            (sqa + sqc + sqb) > 2 * sqmax -> 0
+            (sqa + sqc + sqb) == 2 * sqmax -> 1
+            else -> -1
         }
     }
     return -1
