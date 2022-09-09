@@ -96,11 +96,11 @@ fun timeForHalfWay(
     val s1 = t1 * v1
     val s2 = t2 * v2
     val s3 = t3 * v3
-    val L = (s1 + s2 + s3) / 2
+    val l = (s1 + s2 + s3) / 2
     return when {
-        L <= s1 -> L / v1
-        L <= s1 + s2 -> t1 + ((L - s1) / v2)
-        else -> ((L - s1 - s2) / v3) + t1 + t2
+        l <= s1 -> l / v1
+        l <= s1 + s2 -> t1 + ((l - s1) / v2)
+        else -> ((l - s1 - s2) / v3) + t1 + t2
     }
 
 }
@@ -120,10 +120,10 @@ fun whichRookThreatens(
     rookX2: Int, rookY2: Int
 ): Int {
     var t = 0
-    if ((kingX == rookX1) || (kingY == rookY1)) {
+    if (kingX == rookX1 || kingY == rookY1) {
         t += 1
     }
-    if ((kingX == rookX2) || (kingY == rookY2)) {
+    if (kingX == rookX2 || kingY == rookY2) {
         t += 2
     }
     return t
@@ -167,7 +167,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
     val sqb = b * b
     val sqc = c * c
     val sqmax = max(sqa, max(sqb, sqc))
-    if ((a + b > c) &&(a + c > b) && (b + c > a)) {
+    if ((a + b > c) && (a + c > b) && (b + c > a)) {
         return when {
             (sqa + sqc + sqb) < 2 * sqmax -> 2
             (sqa + sqc + sqb) > 2 * sqmax -> 0
@@ -190,7 +190,7 @@ fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
     if ((c <= a) && (d <= b) && (a <= d)) {
         return (d - a)
     }
-    if ((c <= a) && (b <= d) ) {
+    if ((c <= a) && (b <= d)) {
         return (b - a)
     }
     if ((a <= c) && (d <= b)) {
