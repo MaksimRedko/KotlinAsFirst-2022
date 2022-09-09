@@ -106,5 +106,6 @@ fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
         ((a <= r && c <= s) || (a <= s && c <= r)) -> true
         ((b <= r && c <= s) || (b <= s && c <= r)) -> true
         else -> false
+
     }
 }
