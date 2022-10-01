@@ -2,9 +2,8 @@
 
 package lesson3.task1
 
-import kotlin.math.max
-import kotlin.math.min
-import kotlin.math.sqrt
+import lesson1.task1.sqr
+import kotlin.math.*
 
 // Урок 3: циклы
 // Максимальное количество баллов = 9
@@ -79,8 +78,8 @@ fun digitNumber(n: Int): Int {
     var m = n
     do {
         count++
-        m = m / 10
-    } while(m > 0)
+        m /= 10
+    } while (m > 0)
     return count
 }
 
@@ -91,17 +90,17 @@ fun digitNumber(n: Int): Int {
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
 fun fib(n: Int): Int {
-    var digit_1 = 1
-    var digit_2 = 1
+    var digOne = 1
+    var digTwo = 1
     var c = 0
     for (i in 1..n) {
         if (i > 2) {
-            c = digit_2
-            digit_2 = digit_1 + digit_2
-            digit_1 = c
+            c = digTwo
+            digTwo += digOne
+            digOne = c
         }
     }
-    return digit_2
+    return digTwo
 }
 
 /**
@@ -110,13 +109,13 @@ fun fib(n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var minDivisor = n
+    var miDivisor = n
     for (i in 2..n) {
-        if (n % i == 0 && minDivisor >= i) {
-            minDivisor = i
+        if (n % i == 0 && miDivisor >= i) {
+            miDivisor = i
         }
     }
-    return minDivisor
+    return miDivisor
 }
 
 /**
@@ -126,7 +125,7 @@ fun minDivisor(n: Int): Int {
  */
 fun maxDivisor(n: Int): Int {
     var maxDivisor = 1
-    for (i in 2..n-1) {
+    for (i in 2 until n) {
         if (n % i == 0 && maxDivisor < i) {
             maxDivisor = i
         }
@@ -240,8 +239,8 @@ fun isPalindrome(n: Int): Boolean {
         sum = sum * 10 + m % 10
         m /= 10
     }
-    return when {
-        sum == n -> true
+    return when (sum) {
+        n -> true
         else -> false
     }
 }
@@ -280,6 +279,7 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
+
 fun sin(x: Double, eps: Double): Double = TODO()
 
 /**
@@ -293,6 +293,7 @@ fun sin(x: Double, eps: Double): Double = TODO()
  */
 fun cos(x: Double, eps: Double): Double = TODO()
 
+
 /**
  * Сложная (4 балла)
  *
@@ -302,7 +303,26 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+
+fun squareSequenceDigit(n: Int): Int {
+    var place = 0
+    var num = 0
+    var sqnum = sqr(num)
+    while (place != n) {
+        num++
+        sqnum = sqr(num)
+        place += digitNumber(sqnum)
+        if (place > n) {
+            break
+        }
+    }
+    var sum = sqnum
+    while (place != n) {
+        place--
+        sum /= 10
+    }
+    return (sum % 10)
+}
 
 /**
  * Сложная (5 баллов)
@@ -313,4 +333,22 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var place = 0
+    var num = 0
+    var fibnum = fib(num)
+    while (place != n) {
+        num++
+        fibnum = fib(num)
+        place += digitNumber(fibnum)
+        if (place > n) {
+            break
+        }
+    }
+    var sum = fibnum
+    while (place != n) {
+        place--
+        sum /= 10
+    }
+    return (sum % 10)
+}

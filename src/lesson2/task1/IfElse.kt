@@ -3,6 +3,7 @@
 package lesson2.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -148,7 +149,7 @@ fun rookOrBishopThreatens(
     if (kingX == rookX || kingY == rookY) {
         t += 1
     }
-    if ((bishopX - kingX) * (bishopX - kingX) == (bishopY - kingY) * (bishopY - kingY)) {
+    if (abs(bishopX - kingX) == abs(bishopY - kingY)) {
         t += 2
     }
     return t
@@ -163,9 +164,9 @@ fun rookOrBishopThreatens(
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    val sqa = a * a
-    val sqb = b * b
-    val sqc = c * c
+    val sqa = sqr(a)
+    val sqb = sqr(b)
+    val sqc = sqr(c)
     val sqmax = max(sqa, max(sqb, sqc))
     if ((a + b > c) && (a + c > b) && (b + c > a)) {
         return when {
@@ -186,12 +187,11 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    return when {
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int =
+    when {
         c <= a && d <= b && a <= d -> (d - a)
         c <= a && b <= d -> (b - a)
         a <= c && d <= b -> (d - c)
         a <= c && b <= d && c <= b -> (b - c)
         else -> -1
     }
-}
