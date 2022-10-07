@@ -3,6 +3,7 @@
 package lesson2.task2
 
 import lesson1.task1.sqr
+import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.sqrt
 
@@ -23,10 +24,7 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
 fun isNumberHappy(number: Int): Boolean {
     val sumEnd = (number % 10) + (number % 100 / 10)
     val sumBegin = (number / 1000) + (number / 100 % 10)
-    if (sumEnd == sumBegin) {
-        return true
-    }
-    return false
+    return (sumEnd == sumBegin)
 }
 
 /**
@@ -38,12 +36,10 @@ fun isNumberHappy(number: Int): Boolean {
  */
 fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
     when {
-        (x1 == x2 || y1 == y2) -> true
-        (sqr(x2 - x1) == sqr(y2 - y1)) -> true
+        x1 == x2 || y1 == y2 -> true
+        abs(x2 - x1) == abs(y2 - y1) -> true
         else -> false
     }
-
-
 
 
 /**
@@ -56,13 +52,14 @@ fun daysInMonth(month: Int, year: Int): Int {
     if (month in listOf(1, 3, 5, 7, 8, 10, 12)) {
         return 31
     }
-    if (year % 4 == 0 && month == 2) {
-        return if (year % 100 == 0) {
-            if (year % 400 == 0) {
-                29
-            } else 28
-        } else 29
-    } else if (month == 2) return 28
+    if (month == 2) {
+        return when {
+            year % 100 == 0 && year % 400 == 0 -> 29
+            year % 4 == 0 && year % 100 == 0 -> 28
+            year % 4 == 0 -> 29
+            else -> 28
+        }
+    }
     return 30
 }
 
@@ -77,12 +74,9 @@ fun circleInside(
     x1: Double, y1: Double, r1: Double,
     x2: Double, y2: Double, r2: Double
 ): Boolean {
-    val DistBetwCentr = sqr(x2 - x1) + sqr(y2 - y1)
-    return if (DistBetwCentr < sqr(r2)) {
-        r1 <= r2 - sqrt(DistBetwCentr)
-    } else false
+    val distBetwCentr = sqr(x2 - x1) + sqr(y2 - y1)
+    return (distBetwCentr < sqr(r2) && r1 <= (r2 - sqrt(distBetwCentr)))
 }
-
 
 /**
  * Средняя (3 балла)
@@ -95,8 +89,8 @@ fun circleInside(
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean =
     when {
-        (a <= r && b <= s || a <= s && b <= r) -> true
-        (a <= r && c <= s || a <= s && c <= r) -> true
-        (b <= r && c <= s || b <= s && c <= r) -> true
+        a <= r && b <= s || a <= s && b <= r -> true
+        a <= r && c <= s || a <= s && c <= r -> true
+        b <= r && c <= s || b <= s && c <= r -> true
         else -> false
     }

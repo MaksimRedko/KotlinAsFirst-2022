@@ -109,28 +109,25 @@ fun fib(n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var miDivisor = n
-    for (i in 2..n) {
-        if (n % i == 0 && miDivisor >= i) {
-            miDivisor = i
+    for (i in 2..n / 2) {
+        if (n % i == 0) {
+            return i
         }
     }
-    return miDivisor
+    return n
 }
-
 /**
  * Простая (2 балла)
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    var maxDivisor = 1
-    for (i in 2 until n) {
-        if (n % i == 0 && maxDivisor < i) {
-            maxDivisor = i
+    for (i in n / 2 downTo 1) {
+        if (n % i == 0) {
+            return i
         }
     }
-    return maxDivisor
+    return n
 }
 
 /**
@@ -169,12 +166,12 @@ fun collatzSteps(x: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    var k = 2
-    while (true) {
-        k++
-        if (k % m == 0 && k % n == 0 && k >= m && k >= n) break
+    for (i in max(m, n) downTo 1) {
+        if (m % i == 0 && n % i == 0) {
+            return (m * n / i)
+        }
     }
-    return k
+    return max(m, n)
 }
 
 
@@ -196,8 +193,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
             b < a -> a %= b
         }
         if (a == 0 || b == 0) {
-            k = false
-            break
+            return false
         }
     }
     return k
@@ -239,10 +235,7 @@ fun isPalindrome(n: Int): Boolean {
         sum = sum * 10 + m % 10
         m /= 10
     }
-    return when (sum) {
-        n -> true
-        else -> false
-    }
+    return (sum == n)
 }
 
 /**
@@ -256,18 +249,15 @@ fun isPalindrome(n: Int): Boolean {
 fun hasDifferentDigits(n: Int): Boolean {
     var m = n
     var k = 0
-    var answ = false
     var j = m % 10
     while (m != 0) {
         k = m % 10
         if (k != j) {
-            answ = true
-            break
+            return true
         }
-        j = k
         m /= 10
     }
-    return answ
+    return false
 }
 
 /**
@@ -321,7 +311,7 @@ fun squareSequenceDigit(n: Int): Int {
         place--
         sum /= 10
     }
-    return (sum % 10)
+    return sum % 10
 }
 
 /**
@@ -350,5 +340,5 @@ fun fibSequenceDigit(n: Int): Int {
         place--
         sum /= 10
     }
-    return (sum % 10)
+    return sum % 10
 }
