@@ -22,9 +22,9 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
 fun isNumberHappy(number: Int): Boolean {
-    val sumEnd = (number % 10) + (number % 100 / 10)
-    val sumBegin = (number / 1000) + (number / 100 % 10)
-    return (sumEnd == sumBegin)
+    val sumEnd = number % 10 + number % 100 / 10
+    val sumBegin = number / 1000 + number / 100 % 10
+    return sumEnd == sumBegin
 }
 
 /**
@@ -75,7 +75,7 @@ fun circleInside(
     x2: Double, y2: Double, r2: Double
 ): Boolean {
     val distBetwCentr = sqr(x2 - x1) + sqr(y2 - y1)
-    return (distBetwCentr < sqr(r2) && r1 <= (r2 - sqrt(distBetwCentr)))
+    return distBetwCentr < sqr(r2) && r1 <= r2 - sqrt(distBetwCentr)
 }
 
 /**

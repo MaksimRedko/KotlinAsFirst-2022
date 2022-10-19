@@ -75,7 +75,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  */
 fun digitNumber(n: Int): Int {
     var count = 0
-    var m = n
+    var m = abs(n)
     do {
         count++
         m /= 10
@@ -109,10 +109,8 @@ fun fib(n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    for (i in 2..n / 2) {
-        if (n % i == 0) {
-            return i
-        }
+    for (i in 2..sqrt(n.toDouble()).toInt()) {
+        if (n % i == 0) return i
     }
     return n
 }
@@ -121,14 +119,7 @@ fun minDivisor(n: Int): Int {
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int {
-    for (i in n / 2 downTo 1) {
-        if (n % i == 0) {
-            return i
-        }
-    }
-    return n
-}
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
 
 /**
  * Простая (2 балла)
@@ -165,14 +156,11 @@ fun collatzSteps(x: Int): Int {
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int {
-    for (i in max(m, n) downTo 1) {
-        if (m % i == 0 && n % i == 0) {
-            return (m * n / i)
-        }
+fun lcm(m: Int, n: Int): Int =
+    when {
+        minDivisor(m) == minDivisor(n) -> max(m, n) / minDivisor(n) * min(m, n)
+        else -> m * n
     }
-    return max(m, n)
-}
 
 
 /**
@@ -182,21 +170,18 @@ fun lcm(m: Int, n: Int): Int {
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean {
-    var a = m
-    var b = n
-    while (a != 0 && b != 0) {
-        if (a == 1 || b == 1) break
+fun nod(a:Int, b:Int): Int {
+    var aa = a
+    var bb = b
+    while (aa != 0 && bb != 0) {
         when {
-            b > a -> b %= a
-            b < a -> a %= b
-        }
-        if (a == 0 || b == 0) {
-            return false
+            aa > bb -> aa %= bb
+            else -> bb %= aa
         }
     }
-    return true
+    return aa
 }
+fun isCoPrime(m: Int, n: Int): Boolean = nod(m, n) == 1
 
 /**
  * Средняя (3 балла)
@@ -226,16 +211,7 @@ fun revert(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean {
-    var m = n
-    var sum = m % 10
-    m /= 10
-    while (m != 0) {
-        sum = sum * 10 + m % 10
-        m /= 10
-    }
-    return (sum == n)
-}
+fun isPalindrome(n: Int): Boolean = n == revert(n)
 
 /**
  * Средняя (3 балла)

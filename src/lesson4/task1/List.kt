@@ -3,9 +3,9 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
-import kotlin.math.max
 import kotlin.math.pow
 import kotlin.math.sqrt
+import lesson3.task1.isPrime
 
 // Урок 4: списки
 // Максимальное количество баллов = 12
@@ -145,7 +145,7 @@ fun mean(list: List<Double>): Double =
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun center(list: MutableList<Double>): MutableList<Double> {
-    val srar = list.sum() / list.size
+    val srar = mean(list)
     for (i in 0 until list.size) {
         val element = list[i]
         list[i] = element - srar
@@ -162,7 +162,7 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  */
 fun times(a: List<Int>, b: List<Int>): Int {
     var summ = 0
-    for (i in 0 until b.size) {
+    for (i in b.indices) {
         summ += a[i] * b[i]
     }
     return summ
@@ -216,7 +216,20 @@ fun accumulate(list: MutableList<Int>): MutableList<Int> {
  * Результат разложения вернуть в виде списка множителей, например 75 -> (3, 5, 5).
  * Множители в списке должны располагаться по возрастанию.
  */
-fun factorize(n: Int): List<Int> = TODO()
+fun factorize(n: Int): List<Int> {
+    val factrz = mutableListOf<Int>()
+    var divisor = 2
+    var m = n
+    while (m != 1) {
+        if (m % divisor == 0 && isPrime(divisor)) {
+            factrz.add(divisor)
+            m /= divisor
+            continue
+        }
+        divisor++
+    }
+    return factrz.sorted()
+}
 
 /**
  * Сложная (4 балла)
@@ -225,7 +238,7 @@ fun factorize(n: Int): List<Int> = TODO()
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String = TODO()
+fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*")
 
 /**
  * Средняя (3 балла)
@@ -234,7 +247,16 @@ fun factorizeToString(n: Int): String = TODO()
  * Результат перевода вернуть в виде списка цифр в base-ичной системе от старшей к младшей,
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
-fun convert(n: Int, base: Int): List<Int> = TODO()
+fun convert(n: Int, base: Int): List<Int> {
+    val res = mutableListOf<Int>()
+    var m = n
+    while (m > 0) {
+        res.add(m % base)
+        m /= base
+    }
+    return res.reversed()
+}
+
 
 /**
  * Сложная (4 балла)
@@ -247,6 +269,7 @@ fun convert(n: Int, base: Int): List<Int> = TODO()
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
+
 fun convertToString(n: Int, base: Int): String = TODO()
 
 /**
@@ -256,7 +279,8 @@ fun convertToString(n: Int, base: Int): String = TODO()
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int =
+    (digits.indices).fold(0) { previousResult, element -> previousResult * base + digits[element] }
 
 /**
  * Сложная (4 балла)
@@ -280,7 +304,32 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+val units = listOf("I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX")
+val tens = listOf("X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC")
+val hundreds = listOf("C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM")
+val thousands = listOf("M")
+fun roman(n: Int): String {
+    val res = mutableListOf<String>()
+    var dozens = n / 10
+    while (dozens >= 100) {
+        res.add(thousands[0])
+        dozens -= 100
+    }
+    if (dozens >= 10) {
+        res.add(hundreds[dozens / 10 - 1])
+        dozens -= dozens / 10 * 10
+    }
+    if (dozens >= 1) {
+        res.add(tens[dozens - 1])
+        dozens /= dozens * 10
+    }
+    when {
+        n in 1..9 -> res.add(units[n - 1])
+        n % 10 != 0 -> res.add(units[n - n / 10 * 10 - 1])
+    }
+    return res.joinToString(separator = "", postfix = "", prefix = "")
+}
+
 
 /**
  * Очень сложная (7 баллов)
@@ -290,5 +339,54 @@ fun roman(n: Int): String = TODO()
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 
+val digUnits = listOf(
+    "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять",
+    "десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать",
+    "восемнадцать", "девятнадцать"
+)
+val digTens = listOf(
+    "десять", "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто"
+)
+val digHundred = listOf(
+    "сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот"
+)
+val digThousandsUnit = listOf(
+    "одна", "две", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять"
+)
 
-fun russian(n: Int): String = TODO()
+fun lastThousands(thousands: Int): String {
+    return when {
+        thousands % 10 in 2..4 -> ("тысячи")
+        thousands % 10 in 5..9 || thousands % 10 == 0 || thousands in 10..19 -> ("тысяч")
+        else -> ("тысяча")
+    }
+}
+fun russian(n: Int): String {
+    val res = mutableListOf<String>()
+    var thousands = n / 1000
+    val hundred = n % 1000 / 100
+    val tens = n % 100 / 10
+    if (thousands >= 100) {
+        res.add(digHundred[thousands / 100 - 1])
+    }
+    thousands %= 100
+    if (thousands >= 20) {
+        res.add(digTens[thousands / 10 - 1])
+    }
+    if (thousands in 10..19) {
+        res.add(digUnits[thousands - 1])
+    } else if (thousands != 0) res.add(digThousandsUnit[thousands % 10 - 1])
+    if (n / 1000 != 0) res.add(lastThousands(thousands))
+    if (hundred >= 1) {
+        res.add(digHundred[hundred - 1])
+    }
+    if (tens >= 2) {
+        res.add(digTens[tens - 1])
+    }
+    if (n % 100 in 1..19) {
+        res.add(digUnits[n % 100 - 1])
+        return res.joinToString(separator = " ", prefix = "")
+    }
+    if (n % 10 != 0) res.add(digUnits[n % 10 - 1])
+    return res.joinToString(separator = " ", prefix = "")
+}
