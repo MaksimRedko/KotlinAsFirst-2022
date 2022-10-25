@@ -372,8 +372,7 @@ fun russian(n: Int): String {
     thousands %= 100
     if (thousands >= 20) {
         res.add(digTens[thousands / 10 - 1])
-    }
-    if (thousands in 10..19) {
+    } else if (thousands in 10..19) {
         res.add(digUnits[thousands - 1])
     } else if (thousands != 0) res.add(digThousandsUnit[thousands % 10 - 1])
     if (n / 1000 != 0) res.add(lastThousands(thousands))
@@ -389,4 +388,8 @@ fun russian(n: Int): String {
     }
     if (n % 10 != 0) res.add(digUnits[n % 10 - 1])
     return res.joinToString(separator = " ", prefix = "")
+}
+
+fun main(){
+    print(russian(50397))
 }
