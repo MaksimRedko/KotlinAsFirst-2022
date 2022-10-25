@@ -250,10 +250,10 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
 fun convert(n: Int, base: Int): List<Int> {
     val res = mutableListOf<Int>()
     var m = n
-    while (m > 0) {
+    do {
         res.add(m % base)
         m /= base
-    }
+    } while (m > 0)
     return res.reversed()
 }
 
@@ -356,8 +356,8 @@ val digThousandsUnit = listOf(
 
 fun lastThousands(thousands: Int): String {
     return when {
+        thousands % 10 in 5..9 || thousands % 10 == 0 || thousands % 100 in 10..19 -> ("тысяч")
         thousands % 10 in 2..4 -> ("тысячи")
-        thousands % 10 in 5..9 || thousands % 10 == 0 || thousands in 10..19 -> ("тысяч")
         else -> ("тысяча")
     }
 }

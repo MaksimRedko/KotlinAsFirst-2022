@@ -156,12 +156,7 @@ fun collatzSteps(x: Int): Int {
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int =
-    when {
-        minDivisor(m) == minDivisor(n) -> max(m, n) / minDivisor(n) * min(m, n)
-        else -> m * n
-    }
-
+fun lcm(m: Int, n: Int): Int = m * n / nod(m, n)
 
 /**
  * Средняя (3 балла)
@@ -179,7 +174,7 @@ fun nod(a:Int, b:Int): Int {
             else -> bb %= aa
         }
     }
-    return aa
+    return max(aa,bb)
 }
 fun isCoPrime(m: Int, n: Int): Boolean = nod(m, n) == 1
 
