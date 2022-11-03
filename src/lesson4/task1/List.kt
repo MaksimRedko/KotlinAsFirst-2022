@@ -221,7 +221,7 @@ fun factorize(n: Int): List<Int> {
     var divisor = 2
     var m = n
     while (m != 1) {
-        if (m % divisor == 0 && isPrime(divisor)) {
+        if (m % divisor == 0) {
             factrz.add(divisor)
             m /= divisor
             continue
@@ -281,6 +281,7 @@ fun convertToString(n: Int, base: Int): String = TODO()
  */
 fun decimal(digits: List<Int>, base: Int): Int =
     (digits.indices).fold(0) { previousResult, element -> previousResult * base + digits[element] }
+
 
 /**
  * Сложная (4 балла)
@@ -356,9 +357,9 @@ val digThousandsUnit = listOf(
 
 fun lastThousands(thousands: Int): String {
     return when {
-        thousands % 10 in 5..9 || thousands % 10 == 0 || thousands % 100 in 10..19 -> ("тысяч")
-        thousands % 10 in 2..4 -> ("тысячи")
-        else -> ("тысяча")
+        thousands % 10 in 5..9 || thousands % 10 == 0 || thousands % 100 in 10..19 -> "тысяч"
+        thousands % 10 in 2..4 -> "тысячи"
+        else -> "тысяча"
     }
 }
 fun russian(n: Int): String {
@@ -390,6 +391,4 @@ fun russian(n: Int): String {
     return res.joinToString(separator = " ", prefix = "")
 }
 
-fun main(){
-    print(russian(50397))
-}
+
