@@ -4,6 +4,7 @@ package lesson5.task1
 
 import lesson6.task1.firstDuplicateIndex
 import ru.spbstu.wheels.sorted
+import kotlin.math.max
 
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
@@ -313,10 +314,10 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
-    var res = list.toMutableList()
+    var res = list
     for (i in res.indices) {
         for (j in res.indices) {
-            if (res[i] != res[j] && res[i] + res[j] == number) return Pair(i, j).sorted()
+            if (res[i] + res[j] == number && i != j) return Pair(j, i).sorted()
         }
     }
     return Pair(-1, -1)
@@ -345,39 +346,29 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  */
 
 
-
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
-    val things = treasures.toMutableMap()
-
-
-    for ((key, pair) in treasures) {
-        if (treasures[key]!!.first > capacity) things.remove(key)
-    }
-
-    val filter = mutableMapOf<String, Double>()
-    for ((name, pair) in things) {
-        val coastOneCapasity = things[name]!!.second.toDouble() / things[name]!!.first.toDouble()
-        filter.put(name, coastOneCapasity)
-    }
-
-    val res = mutableSetOf<String>()
-    var countCapasity = 0
-    for (i in 1..filter.size) {
-        var buffer = 0.0
-        var removeName = "nothing"
-        for ((name, coast) in filter) {
-            if (filter[name]!! > buffer) {
-                buffer = coast
-                removeName = name
-            }
+    var res = mutableSetOf<String>()
+    var names = treasures.keys.toList()
+    var coastsAndWeight = treasures.values.toList()
+    val size = treasures.size
+    val maxCoast = MutableList(size + 1) { MutableList(capacity + 1) { 0 } }
+    for (i in 1..size) {
+        for (weight in 1..capacity) {
+            if (weight >= coastsAndWeight[i - 1].first)
+                maxCoast[i][weight] = max(
+                    maxCoast[i - 1][weight],
+                    maxCoast[i - 1][weight - coastsAndWeight[i - 1].first] + coastsAndWeight[i - 1].second
+                )
+            else maxCoast[i][weight] = maxCoast[i - 1][weight]
         }
-        if (countCapasity + things[removeName]!!.first <= capacity) {
-            countCapasity += things[removeName]!!.first
-            res.add(removeName)
-        }
-        filter.remove(removeName)
     }
-    return res.toSet()
+    var weight = capacity
+    for (i in size - 1 downTo 0) {
+        if (maxCoast[i][weight] != maxCoast[i + 1][weight]) {
+            weight -= coastsAndWeight[i].first
+            res.add(names[i])
+        }
+    }
+    return res
 }
-
 
