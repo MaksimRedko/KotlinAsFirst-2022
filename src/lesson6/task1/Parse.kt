@@ -2,6 +2,8 @@
 
 package lesson6.task1
 
+import java.util.*
+
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
 // Рекомендуемое количество баллов = 11
@@ -74,6 +76,7 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
+
 fun dateStrToDigit(str: String): String = TODO()
 
 /**
@@ -149,7 +152,18 @@ fun plusMinus(expression: String): Int = TODO()
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    val parts = str.lowercase().split(" ")
+    var prePart = ""
+    var res = 0
+    for (part in parts) {
+        if (prePart == part) return res - part.length - 1
+        res += part.length + 1
+        prePart = part
+    }
+    return -1
+}
+
 
 /**
  * Сложная (6 баллов)

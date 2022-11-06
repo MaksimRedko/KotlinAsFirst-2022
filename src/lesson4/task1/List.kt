@@ -220,7 +220,7 @@ fun factorize(n: Int): List<Int> {
     val factrz = mutableListOf<Int>()
     var divisor = 2
     var m = n
-    while (m != 1) {
+    while (divisor * divisor <= m) {
         if (m % divisor == 0) {
             factrz.add(divisor)
             m /= divisor
@@ -228,6 +228,7 @@ fun factorize(n: Int): List<Int> {
         }
         divisor++
     }
+    if (m != 1) factrz.add(m)
     return factrz.sorted()
 }
 
@@ -279,8 +280,7 @@ fun convertToString(n: Int, base: Int): String = TODO()
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int =
-    (digits.indices).fold(0) { previousResult, element -> previousResult * base + digits[element] }
+fun decimal(digits: List<Int>, base: Int): Int = TODO()
 
 
 /**
