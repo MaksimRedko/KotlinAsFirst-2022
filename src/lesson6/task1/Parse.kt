@@ -187,7 +187,7 @@ fun mostExpensive(description: String): String {
     var maxCoast = 0.0
     var maxName = ""
     for ((name, coast) in products) {
-        if (coast > maxCoast) {
+        if (coast >= maxCoast) {
             maxCoast = coast
             maxName = name
         }
