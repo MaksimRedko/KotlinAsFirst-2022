@@ -2,7 +2,6 @@
 
 package lesson5.task1
 
-import lesson6.task1.firstDuplicateIndex
 import ru.spbstu.wheels.sorted
 import kotlin.math.max
 
@@ -314,15 +313,14 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
-    var res = list
-    for (i in res.indices) {
-        for (j in res.indices) {
-            if (res[i] + res[j] == number && i != j) return Pair(j, i).sorted()
-        }
+    for (i in list.indices) {
+        if (number - list[i] in list && list.indexOf(number - list[i]) != i) return Pair(
+            i,
+            list.indexOf(number - list[i])
+        ).sorted()
     }
     return Pair(-1, -1)
 }
-
 /**
  * Очень сложная (8 баллов)
  *
@@ -347,25 +345,25 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
 
 
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
-    var res = mutableSetOf<String>()
-    var names = treasures.keys.toList()
-    var coastsAndWeight = treasures.values.toList()
+    val res = mutableSetOf<String>()
+    val names = treasures.keys.toList()
+    val costsAndWeight = treasures.values.toList()
     val size = treasures.size
-    val maxCoast = MutableList(size + 1) { MutableList(capacity + 1) { 0 } }
+    val maxCost = MutableList(size + 1) { MutableList(capacity + 1) { 0 } }
     for (i in 1..size) {
         for (weight in 1..capacity) {
-            if (weight >= coastsAndWeight[i - 1].first)
-                maxCoast[i][weight] = max(
-                    maxCoast[i - 1][weight],
-                    maxCoast[i - 1][weight - coastsAndWeight[i - 1].first] + coastsAndWeight[i - 1].second
+            if (weight >= costsAndWeight[i - 1].first)
+                maxCost[i][weight] = max(
+                    maxCost[i - 1][weight],
+                    maxCost[i - 1][weight - costsAndWeight[i - 1].first] + costsAndWeight[i - 1].second
                 )
-            else maxCoast[i][weight] = maxCoast[i - 1][weight]
+            else maxCost[i][weight] = maxCost[i - 1][weight]
         }
     }
     var weight = capacity
     for (i in size - 1 downTo 0) {
-        if (maxCoast[i][weight] != maxCoast[i + 1][weight]) {
-            weight -= coastsAndWeight[i].first
+        if (maxCost[i][weight] != maxCost[i + 1][weight]) {
+            weight -= costsAndWeight[i].first
             res.add(names[i])
         }
     }

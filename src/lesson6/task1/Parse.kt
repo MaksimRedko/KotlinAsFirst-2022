@@ -2,8 +2,6 @@
 
 package lesson6.task1
 
-import java.util.*
-
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
 // Рекомендуемое количество баллов = 11
@@ -184,11 +182,11 @@ fun mostExpensive(description: String): String {
         if (timesPart.contains(";") || timesPart.size != 2) return ""
         products[timesPart[0]] = timesPart[1].toDouble()
     }
-    var maxCoast = 0.0
+    var maxCost = -123.0
     var maxName = ""
-    for ((name, coast) in products) {
-        if (coast >= maxCoast) {
-            maxCoast = coast
+    for ((name, cost) in products) {
+        if (cost > maxCost) {
+            maxCost = cost
             maxName = name
         }
     }
