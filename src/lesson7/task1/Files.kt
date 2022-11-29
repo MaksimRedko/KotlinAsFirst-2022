@@ -64,12 +64,15 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  */
 fun deleteMarked(inputName: String, outputName: String) {
     var writer = File(outputName).bufferedWriter()
-    for (line in File(inputName).readLines()) {
-        if (line.startsWith("_")) continue
-        writer.write(line)
-        writer.newLine()
+    try {
+        for (line in File(inputName).readLines()) {
+            if (line.startsWith("_")) continue
+            writer.write(line)
+            writer.newLine()
+        }
+    } finally {
+        writer.close()
     }
-    writer.close()
 }
 
 /**
