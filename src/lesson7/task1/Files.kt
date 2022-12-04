@@ -120,7 +120,6 @@ val correctCharacters = mapOf<String, String>(
     "Я" to "А",
     "Ю" to "У"
 )
-
 fun sibilants(inputName: String, outputName: String) {
     val text = File(inputName).readText()
     val writer = StringBuilder()
@@ -130,6 +129,7 @@ fun sibilants(inputName: String, outputName: String) {
             writer.append(text[i].toString())
             writer.append(correctCharacters[text[i + 1].toString()])
             i += 2
+            continue
         }
         writer.append(text[i].toString())
         i++
