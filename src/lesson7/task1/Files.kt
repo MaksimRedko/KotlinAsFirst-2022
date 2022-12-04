@@ -63,15 +63,13 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Подчёркивание в середине и/или в конце строк значения не имеет.
  */
 fun deleteMarked(inputName: String, outputName: String) {
-    var writer = File(outputName).bufferedWriter()
-    try {
+    val writer = File(outputName).bufferedWriter()
+    writer.use { writer ->
         for (line in File(inputName).readLines()) {
             if (line.startsWith("_")) continue
             writer.write(line)
             writer.newLine()
         }
-    } finally {
-        writer.close()
     }
 }
 
@@ -84,8 +82,21 @@ fun deleteMarked(inputName: String, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
-
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
+    val res = mutableMapOf<String, Int>()
+    var n: Int
+    for (substring in substrings) {
+        n = 0
+        val reader = File(inputName).bufferedReader()
+        reader.forEachLine {
+            for (i in 0..it.length - substring.length) {
+                if (it.substring(i, i + substring.length).lowercase() == substring.lowercase()) n++
+            }
+        }
+        res[substring] = n
+    }
+    return res
+}
 
 /**
  * Средняя (12 баллов)
@@ -100,8 +111,30 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  * Исключения (жюри, брошюра, парашют) в рамках данного задания обрабатывать не нужно
  *
  */
+val necessaryCharacters = listOf<String>("ж", "ч", "ш", "щ")
+val correctCharacters = mapOf<String, String>(
+    "ы" to "и",
+    "я" to "а",
+    "ю" to "у",
+    "Ы" to "И",
+    "Я" to "А",
+    "Ю" to "У"
+)
+
 fun sibilants(inputName: String, outputName: String) {
-    TODO()
+    val text = File(inputName).readText()
+    val writer = StringBuilder()
+    var i = 0
+    while (i <= text.length - 1) {
+        if (text[i].lowercase() in necessaryCharacters && text[i + 1].toString() in correctCharacters.keys) {
+            writer.append(text[i].toString())
+            writer.append(correctCharacters[text[i + 1].toString()])
+            i += 2
+        }
+        writer.append(text[i].toString())
+        i++
+    }
+    File(outputName).writeText(writer.toString())
 }
 
 /**

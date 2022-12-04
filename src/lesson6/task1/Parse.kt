@@ -283,7 +283,6 @@ fun mostExpensive(description: String): String {
     }
     return maxName
 }
-
 /**
  * Сложная (6 баллов)
  *
