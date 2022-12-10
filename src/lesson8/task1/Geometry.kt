@@ -3,6 +3,7 @@
 package lesson8.task1
 
 import lesson1.task1.sqr
+import java.lang.IllegalArgumentException
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -82,14 +83,20 @@ data class Circle(val center: Point, val radius: Double) {
      * расстояние между их центрами минус сумма их радиусов.
      * Расстояние между пересекающимися окружностями считать равным 0.0.
      */
-    fun distance(other: Circle): Double = TODO()
+    fun distance(other: Circle): Double {
+        return when {
+            sqrt(sqr(center.x - other.center.x) + sqr(center.y - other.center.y)) <= radius + other.radius -> 0.0
+            else -> sqrt(sqr(center.x - other.center.x) + sqr(center.y - other.center.y)) - radius - other.radius
+        }
+    }
+
 
     /**
      * Тривиальная (1 балл)
      *
      * Вернуть true, если и только если окружность содержит данную точку НА себе или ВНУТРИ себя
      */
-    fun contains(p: Point): Boolean = TODO()
+    fun contains(p: Point): Boolean = sqrt(sqr(p.x - center.x) + sqr(p.y - center.y)) <= radius
 }
 
 /**
@@ -109,7 +116,9 @@ data class Segment(val begin: Point, val end: Point) {
  * Дано множество точек. Вернуть отрезок, соединяющий две наиболее удалённые из них.
  * Если в множестве менее двух точек, бросить IllegalArgumentException
  */
-fun diameter(vararg points: Point): Segment = TODO()
+fun diameter(vararg points: Point): Segment {
+    TODO()
+}
 
 /**
  * Простая (2 балла)
