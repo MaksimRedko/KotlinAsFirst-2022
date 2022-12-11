@@ -111,8 +111,8 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  * Исключения (жюри, брошюра, парашют) в рамках данного задания обрабатывать не нужно
  *
  */
-val necessaryCharacters = listOf<String>("ж", "ч", "ш", "щ")
-val correctCharacters = mapOf<String, String>(
+val necessaryCharacters = listOf("ж", "ч", "ш", "щ")
+val correctCharacters = mapOf(
     "ы" to "и",
     "я" to "а",
     "ю" to "у",
@@ -120,6 +120,7 @@ val correctCharacters = mapOf<String, String>(
     "Я" to "А",
     "Ю" to "У"
 )
+
 fun sibilants(inputName: String, outputName: String) {
     val text = File(inputName).readText()
     val writer = StringBuilder()
@@ -155,7 +156,23 @@ fun sibilants(inputName: String, outputName: String) {
  *
  */
 fun centerFile(inputName: String, outputName: String) {
-    TODO()
+    var maxLineLen = 0
+    File(inputName).bufferedReader().forEachLine {
+        if (it.length > maxLineLen) maxLineLen = it.length
+    }
+    val writer = File(outputName).bufferedWriter()
+    File(inputName).bufferedReader().forEachLine {
+        var trueLine = it.split(" ").filter { it -> it.isNotEmpty() && it != " " }.joinToString(" ")
+        var currentLineLen = trueLine.length
+        var spaceLine = ""
+        repeat((maxLineLen - currentLineLen) / 2) {
+            spaceLine += " "
+        }
+        writer.write(spaceLine)
+        writer.write(trueLine)
+        writer.newLine()
+    }
+    writer.close()
 }
 
 /**
