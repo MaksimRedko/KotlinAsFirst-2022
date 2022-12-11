@@ -158,7 +158,7 @@ fun sibilants(inputName: String, outputName: String) {
 fun centerFile(inputName: String, outputName: String) {
     var maxLineLen = 0
     File(inputName).bufferedReader().forEachLine {
-        val trueLine = it.split(" ").filter { it.isNotEmpty() && it != " " }.joinToString(" ")
+        val trueLine = it.split(" ").filter { it.isNotEmpty() && it != " " }.joinToString("")
         if (trueLine.length > maxLineLen) maxLineLen = it.length
     }
     val writer = File(outputName).bufferedWriter()
