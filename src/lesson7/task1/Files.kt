@@ -162,8 +162,8 @@ fun centerFile(inputName: String, outputName: String) {
     }
     val writer = File(outputName).bufferedWriter()
     File(inputName).bufferedReader().forEachLine {
-        var trueLine = it.split(" ").filter { it -> it.isNotEmpty() && it != " " }.joinToString(" ")
-        var currentLineLen = trueLine.length
+        val trueLine = it.split(" ").filter { it.isNotEmpty() && it != " " }.joinToString(" ")
+        val currentLineLen = trueLine.length
         var spaceLine = ""
         repeat((maxLineLen - currentLineLen) / 2) {
             spaceLine += " "
