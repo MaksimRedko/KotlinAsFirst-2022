@@ -314,12 +314,11 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     if (list.isEmpty()) return Pair(-1, -1)
-    val sortList = list.sorted()
     var j = list.size - 1
     var sum = 0
     var i = 0
     while (sum != number) {
-        sum = sortList[i] + sortList[j]
+        sum = list[i] + list[j]
         when {
             i == j -> return Pair(-1, -1)
             sum > number -> j--
